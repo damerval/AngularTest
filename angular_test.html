@@ -1,23 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
-
+<html ng-app="myApp">
 <head>
-  <meta charset="UTF-8">
-  <title>Angular Test</title>
+  <title>Welcome to AngularJS</title>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+  <script>
+
+    var myApp = angular.module('myApp', []);
+    myApp.controller('MainController', function () {
+      this.currentTime = new Date();
+      this.worldClocks = [{'city': "New York", 'diff': 4},{'city': "San Francisco", 'diff': 1},{'city': "Honolulu", 'diff': -2}];
+    });
+
+  </script>
 </head>
-
-<body ng-init="salary=0;percentage=0;">
-
-<span>Enter your salary: </span>
-<input type="text" ng-model="salary">
-<br>
-How much do you spend as a percentage of your salary on shopping?
-<input type="text" ng-model="percentage">%
-<br>
-The amount spent in shopping will be: <span>{{ salary*percentage*0.01}}</span>
-
-
+<body>
+<h1>Hello, World.</h1>
+<p ng-controller="MainController as main">The current time is {{ main.currentTime | date: 'medium'}}</p>
+<div ng-controller="MainController as main">
+  <p ng-repeat="clock in main.worldClocks">The time in {{ clock.city  | uppercase }} is {{ (main.currentTime.getTime() + (clock.diff*60*60*1000)) | date: 'medium' }}</p>
+</div>
+<p> Two dollars should be formatted like so: {{ 2 | currency }} </p>
 </body>
-
 </html>
