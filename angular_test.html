@@ -1,11 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app>
+
 <head>
   <meta charset="UTF-8">
   <title>Angular Test</title>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
 </head>
-<body>
+
+<body ng-init="salary=0;percentage=0;">
+
+<span>Enter your salary: </span>
+<input type="text" ng-model="salary">
+<br>
+How much do you spend as a percentage of your salary on shopping?
+<input type="text" ng-model="percentage">%
+<br>
+The amount spent in shopping will be: <span>{{ salary*percentage*0.01}}</span>
+
 
 </body>
+
 </html>
