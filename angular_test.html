@@ -3,22 +3,50 @@
 <head>
   <title>Welcome to AngularJS</title>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+        crossorigin="anonymous">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        crossorigin="anonymous"></script>
+
   <script>
 
     var myApp = angular.module('myApp', []);
     myApp.controller('MainController', function () {
       this.currentTime = new Date();
-      this.worldClocks = [{'city': "New York", 'diff': 4},{'city': "San Francisco", 'diff': 1},{'city': "Honolulu", 'diff': -2}];
+      this.worldClocks = [
+        {'city': "New York", 'diff': 4, 'img': "images/nyc.jpg"},
+        {'city': "San Francisco", 'diff': 1, 'img': "images/sf.jpg"},
+        {'city': "Honolulu", 'diff': -2, 'img': 'images/hnl.jpg'}
+      ];
     });
 
   </script>
 </head>
-<body>
+<body ng-controller="MainController as main">
 <h1>Hello, World.</h1>
-<p ng-controller="MainController as main">The current time is {{ main.currentTime | date: 'medium'}}</p>
-<div ng-controller="MainController as main">
-  <p ng-repeat="clock in main.worldClocks">The time in {{ clock.city  | uppercase }} is {{ (main.currentTime.getTime() + (clock.diff*60*60*1000)) | date: 'medium' }}</p>
-</div>
-<p> Two dollars should be formatted like so: {{ 2 | currency }} </p>
+<section style="float: left; clear: left;">
+  <p>The current time is {{ main.currentTime | date: 'medium'}}</p>
+  <div ng-repeat="clock in main.worldClocks">
+    <p>The time in {{ clock.city  | uppercase }} is {{ (main.currentTime.getTime() + (clock.diff*60*60*1000)) | date: 'medium' }}</p>
+    <img title="Picture of {{ clock.city }}" ng-src="{{ clock.img }}">
+  </div>
+</section>
+<section style="float: left; clear: right; height: 300px; width: 500px; background-color: red; margin-left: 20px">
+  <ul class="nav nav-pills">
+    <li> <a href="" ng-click="tab = 1">Description</a> </li>
+    <li> <a href="" ng-click="tab = 2">Specifications</a> </li>
+    <li> <a href="" ng-click="tab = 3">Reviews</a> </li>
+  </ul>
+</section>
+<p style="float: none; clear: both"> Two dollars should be formatted like so: {{ 2 | currency }} </p>
+<p> Currently clicked tab: {{ tab }}</p>
 </body>
 </html>
