@@ -19,14 +19,23 @@
   <script>
 
     var myApp = angular.module('myApp', []);
-    myApp.controller('MainController', function () {
+    myApp.controller('MainController', ['$scope', function ($scope) {
+      $scope.panel = 0;
+      $scope.city_name = null;
+      $scope.time_diff = null;
       this.currentTime = new Date();
       this.worldClocks = [
         {'city': "New York", 'diff': 4, 'img': "images/nyc.jpg"},
         {'city': "San Francisco", 'diff': 1, 'img': "images/sf.jpg"},
         {'city': "Honolulu", 'diff': -2, 'img': 'images/hnl.jpg'}
       ];
-    });
+      $scope.setPanel = function(panel) {
+        $scope.panel = panel;
+      };
+      $scope.isSelected = function(panel) {
+        return panel === $scope.panel;
+      };
+    }]);
 
   </script>
 </head>
@@ -39,14 +48,83 @@
     <img title="Picture of {{ clock.city }}" ng-src="{{ clock.img }}">
   </div>
 </section>
-<section style="float: left; clear: right; height: 300px; width: 500px; background-color: red; margin-left: 20px">
+<section style="float: left; clear: right; height: 300px; width: 500px; margin-left: 50px" ng-init="setPanel(1)">
   <ul class="nav nav-pills">
-    <li> <a href="" ng-click="tab = 1">Description</a> </li>
-    <li> <a href="" ng-click="tab = 2">Specifications</a> </li>
-    <li> <a href="" ng-click="tab = 3">Reviews</a> </li>
+    <li ng-class="{ active:isSelected(1) }"> <a href="" ng-click="setPanel(1)">New York City</a> </li>
+    <li ng-class="{ active:isSelected(2) }"> <a href="" ng-click="setPanel(2)">San Francisco</a> </li>
+    <li ng-class="{ active:isSelected(3) }"> <a href="" ng-click="setPanel(3)">Honolulu</a> </li>
   </ul>
+  <div class="panel" ng-show="isSelected(1)">
+    <h4>History of New York City</h4>
+    <p>The Dutch first settled along the Hudson River in 1624; two years later they established the colony
+      of New Amsterdam on Manhattan Island. In 1664, the English took control of the area and renamed it New York.
+      One of the original 13 colonies, New York played a crucial political and strategic role during the American
+      Revolution. Between 1892 and 1954, millions of immigrants arrived in New York Harbor and passed through
+      Ellis Island on their journey to becoming U.S citizens. It is estimated that up to 40 percent of Americans
+      can trace at least one ancestor to that port of entry. New York City, the largest city in the state,
+      is home to the New York Stock Exchange and is a major international economic center.</p>
+  </div>
+  <div class="panel" ng-show="isSelected(2)">
+    <h4>History of San Francisco</h4>
+    <p>Perched atop hills and filled-in marshland at the entrance to one of the Pacific’s largest natural harbors,
+      San Francisco has had an oversized influence on the history of California and the United States.
+      Originally a Spanish (later Mexican) mission and pueblo, it was conquered by the United States in 1846 and
+      by an invading army of prospectors following the 1848 discovery of gold in its hinterland. The Gold Rush
+      made San Francisco a cosmopolitan metropolis with a frontier edge. The great 1906 earthquake and fire
+      destroyed much of the city but barely slowed its momentum; San Francisco barreled through the 20th century
+      as a center of wealth, military power, progressive culture and high technology.</p>
+  </div>
+  <div class="panel" ng-show="isSelected(3)">
+    <h4>History of Honolulu</h4>
+    <p>Aptly named "The Gathering Place," Oahu is the hub of the Hawaiian Islands, and Honolulu is the heartbeat of Oahu.
+      Most of Honolulu is settled in a narrow shoulder on the south shore of Oahu, nestled between mountains
+      and the Pacific Ocean, and surrounded by fields of sugarcane and pineapple, ranch lands, and farms.
+      One of the most ethnically diverse cities in the United States, more than 75 percent of the state's
+      multicultural population reside there. The economic and entertainment capital of Hawaii, Honolulu
+      is a sophisticated metropolis with a plethora of activities, attractions, and events; however,
+      the city also enjoys a tropical atmosphere and magnificent natural beauty. Much of Hawaii's culture
+      is preserved in Honolulu, in its many museums, churches, national memorials and monuments, and the Iolani Palace,
+      the only royal palace in the United States. Perhaps all of these are reasons why 70,000 travelers
+      from around the world visit the island each day.</p>
+  </div>
+  <div>
+    <p>Enter the name of another city and a time difference in hours below: </p>
+    <p ng-show="$scope.city_name != null">
+      {{ $scope.city_name + " is " + $scope.time_diff + " hours away. It's " + ((main.currentTime.getTime() + ($scope.time_diff*60*60*1000)) | date:'medium') + " over there right now. " }}
+    </p>
+    <form>
+      <select title="Time Difference" ng-model="$scope.time_diff">
+        <option>-12</option>
+        <option>-11</option>
+        <option>-10</option>
+        <option>-9</option>
+        <option>-8</option>
+        <option>-7</option>
+        <option>-6</option>
+        <option>-5</option>
+        <option>-4</option>
+        <option>-3</option>
+        <option>-2</option>
+        <option>-1</option>
+        <option>0</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+        <option>11</option>
+        <option>12</option>
+      </select>
+      <input title="City Name" type="text" ng-model="$scope.city_name">
+    </form>
+  </div>
 </section>
 <p style="float: none; clear: both"> Two dollars should be formatted like so: {{ 2 | currency }} </p>
-<p> Currently clicked tab: {{ tab }}</p>
+<p> Currently clicked tab: {{ panel }}</p>
 </body>
 </html>
